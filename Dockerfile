@@ -23,7 +23,7 @@ RUN set -e \
     && \
     apk add --update --no-cache  --virtual .build-deps \
         bash \
-        gcc \
+        gcc g++ \
         musl-dev \
         openssl \
         go \
@@ -74,7 +74,6 @@ RUN set -e \
     chmod -R 777 "$GOPATH" && \
     apk del .build-deps && \
     mkdir /.cache && chmod -R 777 /.cache && \
-    apk add gcc g++ git && \
     wget -O- -nv https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s v1.22.2
 
 ENV GOPATH /go
