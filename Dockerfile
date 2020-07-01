@@ -42,15 +42,17 @@ RUN set -e \
     case "$apkArch" in \
         armhf) export GOARM='6' ;; \
         x86) export GO386='387' ;; \
-    esac \
-    && \
-    wget -qO- https://dl.google.com/go/go1.12.9.linux-amd64.tar.gz | tar xvz -C /usr/local && \
+    esac
+
+RUN wget -qO- https://dl.google.com/go/go1.12.9.linux-amd64.tar.gz | tar xvz -C /usr/local && \
     cd /usr/local/go/src && ./make.bash && \
-    rm -rf /usr/local/go/pkg/bootstrap /usr/local/go/pkg/obj && \
-    export GOPATH="/go" && \
+    rm -rf /usr/local/go/pkg/bootstrap /usr/local/go/pkg/obj
+
+RUN export GOPATH="/go" && \
     mkdir -p "$GOPATH/src" "$GOPATH/bin" "$GOPATH/pkg" && \
-    export PATH="$GOPATH/bin:/usr/local/go/bin:$PATH" && \
-    go get -u -v github.com/ramya-rao-a/go-outline && \
+    export PATH="$GOPATH/bin:/usr/local/go/bin:$PATH"
+
+RUN go get -u -v github.com/ramya-rao-a/go-outline && \
     go get -u -v github.com/acroca/go-symbols &&  \
     go get -u -v github.com/stamblerre/gocode &&  \
     go get -u -v github.com/rogpeppe/godef && \
@@ -72,7 +74,7 @@ RUN set -e \
     go get -u -v golang.org/x/tools/cmd/gotype && \
     GO111MODULE=on go get -v golang.org/x/tools/gopls@latest && \
     go build -o /go/bin/gocode-gomod github.com/stamblerre/gocode && \
-    chmod -R 777 "$GOPATH" && \
+    chmod -R 777 /go && \
     apk del .build-deps && \
     mkdir /.cache && chmod -R 777 /.cache && \
     cd /usr/local/go && wget -O- -nv https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s v1.22.2
