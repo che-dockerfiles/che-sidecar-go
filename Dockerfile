@@ -19,7 +19,7 @@ RUN mkdir /projects ${HOME} && \
       chmod -R g+rwX ${f}; \
     done
 
-RUN set -e \
+RUN set -e -x \
     && \
     apk add --update --no-cache git \
     && \
@@ -42,13 +42,12 @@ RUN set -e \
     case "$apkArch" in \
         armhf) export GOARM='6' ;; \
         x86) export GO386='387' ;; \
-    esac
-
-RUN wget -qO- https://dl.google.com/go/go1.12.9.linux-amd64.tar.gz | tar xvz -C /usr/local && \
+    esac \
+    && \
+    wget -qO- https://dl.google.com/go/go1.12.9.linux-amd64.tar.gz | tar xvz -C /usr/local && \
     cd /usr/local/go/src && ./make.bash && \
-    rm -rf /usr/local/go/pkg/bootstrap /usr/local/go/pkg/obj
-
-RUN export GOPATH="/go" && \
+    rm -rf /usr/local/go/pkg/bootstrap /usr/local/go/pkg/obj && \
+    export GOPATH="/go" && \
     mkdir -p "$GOPATH/src" "$GOPATH/bin" "$GOPATH/pkg" && \
     export PATH="$GOPATH/bin:/usr/local/go/bin:$PATH"
 
