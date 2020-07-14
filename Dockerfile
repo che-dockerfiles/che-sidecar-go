@@ -47,10 +47,9 @@ RUN set -e -x && \
     mkdir -p /usr/local/go && chmod -R 777 /usr/local/go && \
     cd /usr/local/go && wget -O- -nv https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s v1.22.2
 
-ENV GOPATH /go
 ENV GOCACHE /.cache
 ENV GOROOT /usr/local/go
-ENV GO111MODULE on
+ENV GO111MODULE off
 
 ADD etc/entrypoint.sh /entrypoint.sh
 
